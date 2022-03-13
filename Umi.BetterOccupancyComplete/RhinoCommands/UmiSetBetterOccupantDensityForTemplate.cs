@@ -12,8 +12,6 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
     [Guid("e7bfa093-278e-4d0f-a7b8-509ef1afcacb")]
     public class UmiSetBetterOccupantDensityForTemplate : UmiCommand
     {
-        private ModuleSettings moduleSettings = new ModuleSettings();
-
         public override string EnglishName => nameof(UmiSetBetterOccupantDensityForTemplate);
 
         public override Result Run(RhinoDoc doc, UmiContext context, RunMode mode)
@@ -46,6 +44,8 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
 
             var templateName = templateNames[selectedIndex];
 
+            var moduleSettings = context.ModuleProjectSettings.Get<ModuleSettings>();
+
             moduleSettings.BetterOccupantDensities.TryGetValue(templateName, out var occupantDensity);
 
             var getOccupantDensityResult = RhinoGet.GetNumber("Specify occupant density", false, ref occupantDensity);
@@ -58,6 +58,8 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
             RhinoApp.WriteLine($"Setting better occupant density for {templateName} to {occupantDensity}");
 
             moduleSettings.BetterOccupantDensities[templateName] = occupantDensity;
+
+            context.ModuleProjectSettings.Save<ModuleSettings>();
 
             return Result.Success;
         }

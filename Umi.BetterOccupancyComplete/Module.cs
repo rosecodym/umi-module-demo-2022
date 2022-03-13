@@ -12,6 +12,7 @@ using Umi.BetterOccupancyComplete.Properties;
 using Umi.RhinoServices;
 using Umi.RhinoServices.Buildings;
 using Umi.RhinoServices.Context;
+using Umi.RhinoServices.ModuleProjectSettings;
 using Umi.RhinoServices.UmiEvents;
 
 namespace Umi.BetterOccupancyComplete
@@ -34,6 +35,14 @@ namespace Umi.BetterOccupancyComplete
         protected override Tuple<Bitmap, ImageFormat> TabHeaderIcon => Tuple.Create(Resources.PanelIcon, ImageFormat.Png);
 
         protected override string TabHeaderToolTip => "Better Occupancy";
+
+        public override IEnumerable<IModuleProjectSettingsHandler> ProjectSettingsHandlers
+        {
+            get
+            {
+                yield return new DefaultProjectSettingsHandler<ModuleSettings>("better-occupancy.json");
+            }
+        }
 
         protected override Color? Falsecolor(IUmiBuilding building)
         {
