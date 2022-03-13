@@ -109,6 +109,14 @@ namespace Umi.BetterOccupancyComplete
 
         private void OnProjectOpened(object sender, UmiContext newProjectContext)
         {
+            foreach (var umiObject in newProjectContext.GetObjects())
+            {
+                if (umiObject.Data.TryGetValue("cody module demo/better occupancy", out var series))
+                {
+                    betterOccupancies[Guid.Parse(umiObject.Id)] = (int)series.Data[0];
+                }
+            }
+
             RhinoDoc.DeselectAllObjects += OnDeselectAllObjects;
             RhinoDoc.DeselectObjects += OnSelectionChanged;
             RhinoDoc.SelectObjects += OnSelectionChanged;
