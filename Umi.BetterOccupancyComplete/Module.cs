@@ -19,8 +19,12 @@ namespace Umi.BetterOccupancyComplete
 {
     public class Module : UmiModule
     {
+        public static Module Instance { get; private set; }
+
         private readonly PanelViewModel panelViewModel;
         private readonly Dictionary<Guid, int> selectedBuildingOccupancy;
+
+        private Dictionary<Guid, int> betterOccupancies = new Dictionary<Guid, int>();
 
         public Module()
         {
@@ -28,6 +32,8 @@ namespace Umi.BetterOccupancyComplete
             selectedBuildingOccupancy = new();
 
             ModuleControl = new PanelControl { DataContext = panelViewModel };
+
+            Instance = this;
         }
 
         protected override UserControl ModuleControl { get; }
@@ -64,9 +70,11 @@ namespace Umi.BetterOccupancyComplete
                 return;
             }
 
-            foreach (var umiBuilding in UmiContext.Current.Buildings.ForObjects(selectedRhinoObjects))
+            foreach (var selectedRhinoObject in selectedRhinoObjects)
             {
-                selectedBuildingOccupancy[umiBuilding.Id] = umiBuilding.Occupancy ?? 0;
+                betterOccupancies.TryGetValue(selectedRhinoObject.Id, out var betterOccupancy);
+
+                selectedBuildingOccupancy[selectedRhinoObject.Id] = betterOccupancy;
             }
         }
 
@@ -115,6 +123,11 @@ namespace Umi.BetterOccupancyComplete
             RhinoDoc.SelectObjects -= OnSelectionChanged;
             RhinoDoc.DeselectObjects -= OnSelectionChanged;
             RhinoDoc.DeselectAllObjects -= OnDeselectAllObjects;
+        }
+
+        public void SetBetterOccupancy(Guid buildingId, int occupancy)
+        {
+            betterOccupancies[buildingId] = occupancy;
         }
     }
 }

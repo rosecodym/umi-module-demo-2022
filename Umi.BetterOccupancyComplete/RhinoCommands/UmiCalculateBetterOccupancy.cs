@@ -42,6 +42,8 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
 
                     simulationResults.Add(resultObject);
 
+                    Module.Instance.SetBetterOccupancy(building.Id, (int)buildingOccupancy.Value);
+
                     RhinoApp.WriteLine($"Building: {building.Name}: {buildingOccupancy} occupant(s)");
                 }
             }
