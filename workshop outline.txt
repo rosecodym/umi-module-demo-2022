@@ -1,0 +1,38 @@
+1. create new module, build, install, see working
+    a. run command from console
+    b. run command using button
+2. modify created command
+    a. rename
+    b. calculate occupancy on a per-building basis (using existing properties)
+3. see how the button no longer works - fix it
+4. save the calculated occupancy as a simulation result
+    a. verify in results viewer
+    b. verify that they persist even after closing the project
+5. create command to set per-template better occupant density
+    a. create new command
+    b. get template name
+        i. collect template names
+            1. add basilisk reference :(
+        ii. create name getter
+    c. get occupant density
+    d. persist in memory
+        i. create module settings type/instance
+        ii. store to instance
+        iii. load from instance
+    e. have umi handle persistence
+        i. register handler
+        ii. load from context
+        iii. save to context
+6. use better occupant density
+    a. update command to use module settings
+7. update panel to use new numbers
+    a. update module to track better occupancy
+    b. update module to use tracked better occupancy
+    c. add module method to update tracked better occupancy
+    d. add module instance property
+    e. invoke module update method after calculating
+    f. load better occupancy on project load
+8. create per-building occupant density overrides
+    a. add property to settings object
+    b. create command to set override
+    c. use override value when calculating
