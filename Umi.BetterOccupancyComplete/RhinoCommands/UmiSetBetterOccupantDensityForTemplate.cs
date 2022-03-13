@@ -44,7 +44,15 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
 
             var templateName = templateNames[selectedIndex];
 
-            RhinoApp.WriteLine($"Selected template: {templateName}");
+            var occupantDensity = 0.0;
+            var getOccupantDensityResult = RhinoGet.GetNumber("Specify occupant density", false, ref occupantDensity);
+
+            if (getOccupantDensityResult != Result.Success)
+            {
+                return getOccupantDensityResult;
+            }
+
+            RhinoApp.WriteLine($"Setting better occupant density for {templateName} to {occupantDensity}");
 
             return Result.Success;
         }
