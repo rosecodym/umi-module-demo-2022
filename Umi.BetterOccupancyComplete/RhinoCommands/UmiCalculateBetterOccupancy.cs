@@ -20,6 +20,8 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
 
             var moduleSettings = context.ModuleProjectSettings.Get<ModuleSettings>();
 
+            var betterOccupancyModuleBuildingSettings = context.GetSettings<BuildingSettings>();
+
             foreach (var building in context.Buildings.All)
             {
                 if (building.TemplateName == null)
@@ -28,6 +30,13 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
                 }
 
                 moduleSettings.BetterOccupantDensities.TryGetValue(building.TemplateName, out var occupantDensity);
+
+                var buildingSettings = betterOccupancyModuleBuildingSettings.TryGet(building.Id);
+
+                if (buildingSettings != null && buildingSettings.OccupantDensityOverride.HasValue)
+                {
+                    occupantDensity = buildingSettings.OccupantDensityOverride.Value;
+                }
 
                 var buildingOccupancy = occupantDensity * building.GrossFloorArea;
 
