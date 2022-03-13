@@ -18,9 +18,18 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
         {
             var simulationResults = new List<IUmiObject>();
 
+            var moduleSettings = context.ModuleProjectSettings.Get<ModuleSettings>();
+
             foreach (var building in context.Buildings.All)
             {
-                var buildingOccupancy = building.OccupantDensity * building.GrossFloorArea;
+                if (building.TemplateName == null)
+                {
+                    continue;
+                }
+
+                moduleSettings.BetterOccupantDensities.TryGetValue(building.TemplateName, out var occupantDensity);
+
+                var buildingOccupancy = occupantDensity * building.GrossFloorArea;
 
                 if (buildingOccupancy.HasValue)
                 {
