@@ -39,7 +39,7 @@ namespace Umi.BetterOccupancyComplete.RhinoCommands
 
             if (getTemplateResult != GetResult.Nothing)
             {
-                selectedIndex = templateNameGetter.OptionIndex();
+                selectedIndex = templateNameGetter.Option().CurrentListOptionIndex;
             }
 
             var templateName = templateNames[selectedIndex];
